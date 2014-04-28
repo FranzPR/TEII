@@ -1,0 +1,80 @@
+\documentclass[a4paper]{article}
+
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+
+
+
+
+
+\title{La paradoja del cumpleaños}
+
+\author{Francisco José Pascual Rodríguez}
+
+\date{28 de Abril de 2014}
+
+\begin{document}
+\maketitle
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{umu.jpg}
+\end{center}
+\end{figure}
+
+
+
+
+
+
+\section{Introductión}
+
+La paradoja del cumpleaños es una conocida contradicción lógica que sucede en el mundo real. Según esta, la probabilidad de que en un grupo de unas 20 personas la fecha de cumpleaños de dos de los individuos coincida, es bastante más alta de lo que se piensa (algo más de un 50\%). Realmente en el sentido estricto no es una contradicción lógica, ya que matemáticamente demostraremos el porqué sucede esto, pero sí que supone una contradicción a lo que el sentido común dictaría.
+
+
+\section{Explicación}
+
+\begin{quote}
+La paradoja del cumpleaños establece que si hay 23 personas reunidas hay una probablidad del 50,7\% de que al menos dos personas de ellas cumplan años el mismo día. Para 60 o más personas la probabilidad es mayor del 99\%. Obviamente es casi del 100\% para 366 personas (teniendo en cuenta los años bisiestos).
+\end{quote}
+En definitiva, lo que esto establece es que aun a priori podamos pensar que la probabilidad de que en un grupo de 20 personas dos coincidan en su fecha de cumpleaños sea muy baja, ya que 20 entre 365 abre un abanico muy grande de posibilidades, esto no es así, ya que matemáticamente habría que calcular las posibilidades de cada una de las 20 personas, con el resto de las otras 20, y esto supone al menos un 50\% de probabilidad de que coincidan, como hemos visto anteriormente.\\
+Para hacer los calculos matemáticos, procederemos a calcular \texttt{p}, la probabilidad de que no hayan dos personas que hayan nacido el mismo día. Finalmente, una vez calculada, aplicaremos \texttt{1-p} para averiguar cual es la probabilidad contraria, es decir, de que hayan nacido el mismo día.\\
+Por lo tanto, cogeríamos a una persona, y seguidamente a otra persona del grupo. Para calcular la probablidad de que no hayan nacido el mismo día tendríamos: Casos favorables 364 días, casos posibles 365 días. Es decir, $\frac{364}{365} $. Si cogiesemos a otra persona más, la probabilidad sería $\frac{363}{365} $ por lo mismo explicado anteriormente, y así sucesivamente. Y como son sucesos independientes, la probabilidad de que todos ocurran a la vez, es el producto de todas las probabilidades. Sería:
+\[
+\ p = \frac{364}{365} \cdot \frac{363}{365} \cdot \frac{362}{365} \cdot ... \cdot  \frac{365-n+1}{365}
+\]
+Recordemos que esta sería la probabilidad de que dos personas no coincidan en la misma fecha de su nacimiento, para calcular la probabilidad de que dos personas coincidan, sería por tanto:
+\[
+\ 1-p = 1 - \frac{364}{365} \cdot \frac{363}{365} \cdot \frac{362}{365} \cdot ... \cdot  \frac{365-n+1}{365}
+\]
+
+
+\section{Demostración}
+Podemos automatizar y realizar estos calculos a través de la herramienta Octave, la cual nos ofrece la posibilidad de contrastarlo en una gráfica para que así veamos mejor el crecimiento de la curva de probabilidades en todos los casos dependiendo del número de personas con los que cuente el experimento.\\
+Para ello introduciremos el siguiente código en Octave:
+\begin{verbatim}
+ x = lispace(1,100,100);
+ pc = 1.0;
+ for i = 1:100
+ 			pc = pc * (365-i)/365;
+ 			p = 1-pc;
+ 			y(i) = p;
+ end
+ plot(x,y,'-*')
+ xlabel('Numero de Personas')
+ ylabel('Probabilidad')
+\end{verbatim}
+Lo que hacemos es generar los casos para 1 a 100 individuos (podríamos introducir hasta 365, pero como veremos en la gráfica resultante, a partir de 60 individuos la probabilidad ya es casi total), y para cada caso, calcularemos la probabilidad de que no hayan más personas que cumplan años el mismo día, para seguidamente hallar la probabilidad opuesta que será lo que nos interesa. Introducimos esos datos en un vector de muestra \texttt{y}, y lo confrontamos en una gráfica obteniendo los siguientes resultados:
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{grafica.png}
+\end{center}
+\end{figure}
+
+En la gráfica podemos observar como se cumple lo que habíamos mencionado en el enunciado, y es que a partir de 23 individuos, la probabilidad ya asciende a más del 50\%, creciendo rápidamente a medida que vamos añadiendo individuos a al experimento.
+\end{document}
+
+
